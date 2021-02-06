@@ -3,7 +3,7 @@ from cleaner import clean_data as clean
 from loader import load_data as load
 config = {
     'clean' : {
-        'enabled': False,
+        'enabled': True,
         'desired_columns':  [
             'teams.0.win',
             'participants.0.championId',
