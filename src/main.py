@@ -1,9 +1,9 @@
 import csv
 from cleaner import clean_data as clean
-
+from loader import load_data as load
 config = {
     'clean' : {
-        'enabled': True,
+        'enabled': False,
         'desired_columns':  [
             'teams.0.win',
             'participants.0.championId',
@@ -16,14 +16,14 @@ config = {
             'participants.7.championId',
             'participants.8.championId',
             'participants.9.championId',],
-        'file_name': "data/post-cleaning-dataset.csv",
+        'file_name': "../../data/post-cleaning-dataset.csv",
         'output_file_name':"data/filtered-dataset.csv"
         }
+        
 }
 
 def main():
     if(config["clean"]["enabled"]):
         clean(config['clean']["file_name"], config['clean']["output_file_name"],config['clean']["desired_columns"])
-    #data = load()
-
+    data = load(config['clean']["output_file_name"])
 main()
