@@ -2,8 +2,8 @@ import csv
 from cleaner import clean_data as clean
 from loader import load_data as load
 config = {
-    'clean' : {
-        'enabled': True,
+    'filter' : {
+        'enabled': False,
         'desired_columns':  [
             'teams.0.win',
             'participants.0.championId',
@@ -24,6 +24,6 @@ config = {
 
 def main():
     if(config["clean"]["enabled"]):
-        clean(config['clean']["file_name"], config['clean']["output_file_name"],config['clean']["desired_columns"])
-    data = load(config['clean']["output_file_name"])
+        clean(config['filter']["file_name"], config['filter']["output_file_name"],config['filter']["desired_columns"])
+    data = load(config['filter']["output_file_name"])
 main()
