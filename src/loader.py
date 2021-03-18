@@ -17,11 +17,11 @@ def load_data(file_name, by_combination = False):
     f.close()   
     print("Done loading data.")
     if by_combination: 
-        with open('data/team_dict_by_combination.txt', 'w') as f:
+        with open('results/team_dict_by_combination.txt', 'w') as f:
             f.write(str(dataset))
         f.close()
     else:
-        with open('data/team_dict.txt', 'w') as f:
+        with open('results/team_dict.txt', 'w') as f:
             f.write(str(dataset))
         f.close()
     return dataset
@@ -63,6 +63,12 @@ def add_data(dataset, row):
     #update red team
     dataset[red_team] = [dataset[red_team][0] + 1 if not blue_team_victory else dataset[red_team][0], dataset[red_team][1] + 1]
 
+def load_win_rate(win_rate_file):
+    with open(win_rate_file, 'r') as f:
+        content = f.readlines()
+        return [int(line) for line in content]
+
+
 def list_to_string(row):
     res = ""
     row.sort()
@@ -70,23 +76,4 @@ def list_to_string(row):
         res += (str(element) + ',')
     return res[0:len(res)-1]
 
-def calculate_winrate(file_name):
-    print("Calculating winrate.")
-    dataset = {}
-    with open(file_name,'r') as f:
-        reader = csv.reader(f, delimiter = ',')
-        next(reader)
-        blue_wins = 0
-        total_games = 0
-        for row in reader:
-            blue_team_victory = True if int(row[10]) == 1 else False
-            if blue_team_victory:
-                blue_wins += 1
-            total_games += 1
-    f.close()   
-    print("Done calculating winrate.")
-    with open('data/win_rate.txt', 'w') as f:
-        f.write(str([blue_wins, total_games]))
-    f.close()
-    return [blue_wins, total_games]
-    
+load_win_rate("../../data/win_rate.txt")

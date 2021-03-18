@@ -1,41 +1,29 @@
 import csv
-from cleaner import clean_data as clean
 from loader import load_data as load
-from loader import calculate_winrate as winrate
+from loader import load_win_rate
 from generalModel import Model
+import psutil
+import time
 config = {
-    'filter' : {
-        'enabled': False,
-        'desired_columns':  [
-            'teams.0.win',
-            'participants.0.championId',
-            'participants.1.championId',
-            'participants.2.championId',
-            'participants.3.championId',
-            'participants.4.championId',
-            'participants.5.championId',
-            'participants.6.championId',
-            'participants.7.championId',
-            'participants.8.championId',
-            'participants.9.championId',],
-        'file_name': "../../data/post-cleaning-dataset.csv",
-        'output_file_name':"data/filtered-dataset.csv"
-        },
+    'dataset':"../../data/filtered-dataset.csv",
+    'win_rate_file': '../../data/win_rate.txt',
     'loading': {
         'by_combination': False,
     }
 }
 
 def main():
-    if(config["filter"]["enabled"]):
-        clean(config['filter']["file_name"], config['filter']["output_file_name"],config['filter']["desired_columns"])
-    data = load(config['filter']["output_file_name"], config['loading']['by_combination'] )
-    win_rate = winrate(config['filter']["output_file_name"])
+    data = load(config["dataset"], config['loading']['by_combination'])
+    win_rate = load_win_rate(config["win_rate_file"])
     model = Model(data, win_rate, 5)
     print("Predicting.....")
+    start_time = time.time()
     res = model.predict(['121', '24', '18'], ['11', '26'])
+    finish_time = time.time()
+    peak_memory_usage = psutil.Process().memory_info().peak_wset / 1000000
     print("Result for blue team:")
     print(res[0])
     print("Result for red team:")
     print(res[1])
+    print('Took', finish_time - start_time, 'seconds and had peak memory usage of', peak_memory_usage, 'megabytes')
 main()

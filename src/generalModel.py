@@ -24,6 +24,7 @@ class Model:
             if self.is_sub_team(team_combination, red_team):
                 red_team_recommendations[team_combination] = self.data[team_combination][0] / self.data[team_combination][1]
         return [self.sort_dictionary(blue_team_recommendations), self.sort_dictionary(red_team_recommendations)]
+    
     def sort_dictionary(self, dict):
         list_of_items = sorted(dict.items(), reverse=True, key = lambda x: x[1])
         res = {}
@@ -31,9 +32,10 @@ class Model:
             key, value = list_of_items[i]
             res[key] = value
         return res
+
     def is_sub_team(self, team, subteam):
-        team_set = set((team))
-        team_subset = set((subteam))
+        team_set = set(team)
+        team_subset = set(subteam)
         return team_subset.issubset(team_set)
 
         
