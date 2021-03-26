@@ -5,10 +5,6 @@ class Model:
         self.num_of_recommendations = num_of_recommendations
 
     def predict(self, blue_team, red_team):
-        if len(blue_team) != 2 and len(red_team) != 2:
-            raise ValueError
-        if abs(len(blue_team) - len(red_team)) != 1:
-            raise ValueError
         
         blue_team.sort()
         red_team.sort()
@@ -23,8 +19,8 @@ class Model:
                 blue_team_recommendations[team_combination] = self.data[team_combination][0] / self.data[team_combination][1]
             if self.is_sub_team(team_combination, red_team):
                 red_team_recommendations[team_combination] = self.data[team_combination][0] / self.data[team_combination][1]
-        return [self.sort_dictionary(blue_team_recommendations), self.sort_dictionary(red_team_recommendations)]
-    
+        return self.sort_dictionary(blue_team_recommendations), self.sort_dictionary(red_team_recommendations)
+
     def sort_dictionary(self, dict):
         list_of_items = sorted(dict.items(), reverse=True, key = lambda x: x[1])
         res = {}
