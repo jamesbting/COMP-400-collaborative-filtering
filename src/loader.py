@@ -1,5 +1,4 @@
 import csv
-
 def load_data(file_name, by_combination = False):
     print("Loading data into the program")
     dataset = {}
@@ -14,7 +13,7 @@ def load_data(file_name, by_combination = False):
     f.close()   
     print("Done loading data.")
    
-    with open('results/team_dict.txt', 'w') as f:
+    with open('teams/team_dict.txt', 'w') as f:
         f.write(str(dataset))
     f.close()
     return dataset
