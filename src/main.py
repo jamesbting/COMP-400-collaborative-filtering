@@ -16,9 +16,9 @@ config = {
 }
 
 def main():
-    run_experiment(config["num_requests"])
+    run_experiment(config["num_requests"], location = config['results_location'])
 
-def run_experiment(num_requests):
+def run_experiment(num_requests, location = None):
     data = load(config["dataset"])
 
     win_rate = load_win_rate(config["win_rate_file"])
@@ -31,8 +31,8 @@ def run_experiment(num_requests):
         print(f'iter: {i}')
         results.append(make_prediction(model, blue_team, red_team, model.predict))
 
-    if config['save_results']:
-        save_results(results, config['results_location'])
+    if location is not None:
+        save_results(results, location)
 
 def make_prediction(model, blue_team, red_team, prediction_function):
     start_time = time.time()

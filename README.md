@@ -8,7 +8,16 @@ This program will iterate over the dataset in specified in the config object. It
 
 The program will only filter the data if the value in the config object is flagged as true.
 
+## Pre-requisites
 
+- Python 3.9.2
+- pip 21.0.1
+
+The following Python modules are required as well
+
+- psutil
+
+By running the following command ```pip install psutil```. 
 
 ### Loading the data
 
@@ -28,3 +37,7 @@ Loading by team combination will mean that the program will select red and blue 
 Leading by the red an team combinations means that the program will read the blue team and red team combinations and for each blue team combination, it will map to all the red team combinations that were encountered against that blue team. The red teams are then mapped to win rates.
 
 One disadvantage of this method is that it is difficult to find repeated team combinations, and will require far more data points than 300,000 points. 
+
+## Results
+
+The results are stored in the results folder by default. Running the program once will generate one results.csv file, stamped with the date and the time. Each row will represent one experiment, with 2 numbers. The first number is the time to run the experiment, and the second one is the peak memory usage in megabytes. 
