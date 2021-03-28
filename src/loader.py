@@ -27,15 +27,17 @@ def add_data(dataset, row):
     #check if blue team is already in the dictionary
     if blue_team not in dataset:
         dataset[blue_team] = [1 if blue_team_victory else 0, 1]
-        
+    else:
+        #update blue team
+        dataset[blue_team] = [dataset[blue_team][0] + 1 if blue_team_victory else dataset[blue_team][0], dataset[blue_team][1] + 1]
+    
     if red_team not in dataset:
         dataset[red_team] = [1 if blue_team_victory else 0, 1]
- 
-    #update blue team
-    dataset[blue_team] = [dataset[blue_team][0] + 1 if blue_team_victory else dataset[blue_team][0], dataset[blue_team][1] + 1]
+    else:
+        #update red team
+        dataset[red_team] = [dataset[red_team][0] + 1 if not blue_team_victory else dataset[red_team][0], dataset[red_team][1] + 1]
 
-    #update red team
-    dataset[red_team] = [dataset[red_team][0] + 1 if not blue_team_victory else dataset[red_team][0], dataset[red_team][1] + 1]
+    
 
 def load_win_rate(win_rate_file):
     with open(win_rate_file, 'r') as f:
