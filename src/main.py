@@ -11,7 +11,7 @@ config = {
     'win_rate_file': '../data/win_rate.txt',
     'num_recs': 5,
     'num_requests': 1,
-    'save_results': True,
+    'save_results': False,
     'results_location': 'results'
 }
 

@@ -21,15 +21,17 @@ def load_data(file_name, by_combination = False):
 def add_data(dataset, row):
     if(len(row) != 11): 
         raise ValueError
-    blue_team = tuple(row[0:5])
-    red_team = tuple(row[5:10])
+    blue_team = tuple([int(el) for el in row[0:5]])
+    red_team = tuple([int(el) for el in row[5:10]])
     blue_team_victory = True if int(row[10]) == 1 else False
     #check if blue team is already in the dictionary
     if blue_team not in dataset:
         dataset[blue_team] = [1 if blue_team_victory else 0, 1]
+        return
         
     if red_team not in dataset:
         dataset[red_team] = [1 if blue_team_victory else 0, 1]
+        return
  
     #update blue team
     dataset[blue_team] = [dataset[blue_team][0] + 1 if blue_team_victory else dataset[blue_team][0], dataset[blue_team][1] + 1]
