@@ -9,8 +9,8 @@ from datetime import date
 config = { 
     'dataset':"../data/filtered-dataset.csv",
     'win_rate_file': '../data/win_rate.txt',
-    'num_recs': 5,
-    'num_requests': 1,
+    'num_recs': 1,
+    'num_requests': 100,
     'save_results': True,
     'results_location': 'results'
 }
@@ -43,18 +43,22 @@ def make_prediction(model, blue_team, red_team, prediction_function):
     print(blue)
     print('Red recommendations:')
     print(red)
-    return [finish_time - start_time, peak_memory_usage]
+    return [finish_time - start_time, peak_memory_usage, blue, red]
 
 def save_results(results, location):
     today = date.today().strftime('%d-%m-%Y')
     curr_time = time.time()
     average_time = 0
+    average_mem = 0
     with open(f'{location}/results-{today}-{curr_time}.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         for row in results:
             writer.writerow(row)
             average_time += row[0]
+            average_mem += row[1]
     f.close()
     average_time /= len(results)
+    average_mem /= len(results)
     print(f'Average time: {average_time}')
+    print(f'Average peak memory usage: {average_mem}')
 main()
