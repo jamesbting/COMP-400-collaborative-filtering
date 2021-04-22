@@ -7,12 +7,12 @@ import time
 from datetime import date
 
 config = { 
-    'dataset':"../data/filtered-dataset.csv",
+    'dataset':"../data/filtered-dataset-no-header.csv",
     'win_rate_file': '../data/win_rate.txt',
     'num_recs': 1,
     'num_requests': 100,
     'save_results': True,
-    'results_location': 'results'
+    'results_location': 'results/real'
 }
 
 def main():
@@ -27,13 +27,21 @@ def run_experiment(num_requests, location = None):
     red_team = ['11', '26']
     
     results = []
+    recs = []
     for i in range(num_requests):
         print(f'iter: {i}')
-        results.append(make_prediction(model, blue_team, red_team, model.predict))
+        res, blue, red = make_prediction(model, blue_team, red_team, model.predict)
+        results.append(res)
+        recs.append(combine_recs(blue, red))
+    if config['save_results']:
+        save_results(results, recs, location)
 
-    if location is not None:
-        save_results(results, location)
-
+def combine_recs(blue, red):
+    res = []
+    for b, r in zip(blue.keys(),red.keys()):
+        res.append(list(b) + list(r))
+        print(list(b) + list(r))
+    return res
 def make_prediction(model, blue_team, red_team, prediction_function):
     start_time = time.time()
     blue, red = prediction_function(blue_team, red_team)
@@ -43,9 +51,9 @@ def make_prediction(model, blue_team, red_team, prediction_function):
     print(blue)
     print('Red recommendations:')
     print(red)
-    return [finish_time - start_time, peak_memory_usage, blue, red]
+    return [finish_time - start_time, peak_memory_usage,], blue, red
 
-def save_results(results, location):
+def save_results(results, recs, location):
     today = date.today().strftime('%d-%m-%Y')
     curr_time = time.time()
     average_time = 0
@@ -57,6 +65,14 @@ def save_results(results, location):
             average_time += row[0]
             average_mem += row[1]
     f.close()
+
+    with open(f'{location}/recs-{today}-{curr_time}.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        for row in recs:
+            for rec in row:
+                writer.writerow(rec)
+    f.close()
+
     average_time /= len(results)
     average_mem /= len(results)
     print(f'Average time: {average_time}')
